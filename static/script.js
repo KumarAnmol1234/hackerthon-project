@@ -1,8 +1,5 @@
 // Initial Data
 let expenses = [
-    { id: 1, category: 'Food', amount: 5.99, date: '2026-01-15', description: 'Grocery shopping' },
-    { id: 2, category: 'Transportation', amount: 69.00, date: '2026-01-14', description: 'Gas' },
-    { id: 3, category: 'Entertainment', amount: 75.50, date: '2026-01-12', description: 'Movie tickets' }
 ];
 
 // Chart Instances
@@ -27,7 +24,7 @@ function init() {
 
 function renderList() {
     listContainer.innerHTML = '';
-    
+
     // Sort by newest date first
     expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -61,7 +58,7 @@ function updateSummary() {
 
 function addExpense(e) {
     e.preventDefault();
-    
+
     const category = document.getElementById('category').value;
     const amount = parseFloat(document.getElementById('amount').value);
     const date = document.getElementById('date').value;
@@ -76,17 +73,17 @@ function addExpense(e) {
     };
 
     expenses.push(newExpense);
-    
+
     renderList();
     updateSummary();
     renderCharts();
-    
+
     form.reset();
     // Set date back to today
     document.getElementById('date').valueAsDate = new Date();
 }
 
-window.deleteExpense = function(id) {
+window.deleteExpense = function (id) {
     expenses = expenses.filter(item => item.id !== id);
     renderList();
     updateSummary();
