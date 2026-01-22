@@ -138,7 +138,7 @@ function renderCharts() {
             labels: categories,
             datasets: [{
                 data: dataValues,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#16f083', '#9966FF'],
                 borderWidth: 0
             }]
         },
