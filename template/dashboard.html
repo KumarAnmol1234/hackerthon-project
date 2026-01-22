@@ -4,8 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/style1.css">
 </head>
 <body>
-    
+
+    <nav class="navbar">
+        <div class="logo">
+            <span class="icon">wallet</span> Expense Tracker
+        </div>
+        <div class="user-profile">GU</div>
+    </nav>
+
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>Expense Dashboard</h1>
+            <p>Track and visualize your financial expenses</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Expenses</h3>
+                <p class="amount" id="total-expenses">$0.00</p>
+                <span class="card-note">All time</span>
+            </div>
+            <div class="card">
+                <h3>This Month</h3>
+                <p class="amount" id="monthly-expenses">$0.00</p>
+                <span class="card-note">Current month</span>
+            </div>
+            <div class="card">
+                <h3>Average Expense</h3>
+                <p class="amount" id="avg-expenses">$0.00</p>
+                <span class="card-note">Per transaction</span>
+            </div>
+            <div class="card">
+                <h3>Total Transactions</h3>
+                <p class="amount" id="total-count">0</p>
+                <span class="card-note">All time</span>
+            </div>
+        </div>
+
+        <div class="section-container form-container">
+            <h2>Add New Expense</h2>
+            <form id="expense-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="category" required>
+                            <option value="Food">Food & Dining</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Shopping">Shopping</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount ($)</label>
+                        <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="description" placeholder="Optional description">
+                    </div>
+                </div>
+                <button type="submit" class="add-btn">+ Add Expense</button>
+            </form>
+        </div>
+
+        <div class="charts-row">
+            <div class="section-container chart-container">
+                <h2>Expenses by Category (Bar)</h2>
+                <div class="chart-wrapper">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <div class="section-container chart-container">
+                <h2>Category Breakdown (Pie)</h2>
+                <div class="chart-wrapper">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container recent-container">
+            <h2>Recent Expenses</h2>
+            <div id="transaction-list">
+                </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>
