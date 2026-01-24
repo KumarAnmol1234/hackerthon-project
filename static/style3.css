@@ -1,0 +1,113 @@
+/* --- PROFILE MODAL STYLES --- */
+
+/* The dark background overlay */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Dim background */
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px); /* Nice blur effect */
+}
+
+/* The White Box */
+.modal-content {
+    background: white;
+    width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s ease;
+    text-align: center;
+}
+
+/* Close 'X' Button */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+    font-weight: bold;
+}
+.close-modal:hover { color: #333; }
+
+/* Typography */
+.modal-header h2 {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+    color: #111;
+}
+.modal-header p {
+    color: #888;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+}
+
+/* Avatar Circle */
+.large-avatar {
+    width: 80px;
+    height: 80px;
+    background: #eee;
+    color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 auto 15px auto;
+}
+
+.profile-avatar-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.email-text {
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.profile-divider {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* Stats Styling */
+.profile-stats {
+    text-align: left; /* Align text to the left like screenshot */
+    padding: 0 10px;
+}
+
+.stat-row {
+    margin-bottom: 15px;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 2px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #111;
+}
+
+/* Open Animation */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
