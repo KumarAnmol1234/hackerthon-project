@@ -123,7 +123,7 @@ function renderCharts() {
             datasets: [{
                 label: 'Spending',
                 data: dataValues,
-                backgroundColor: '#111',
+                backgroundColor: '#3f3f3fc5',
                 borderRadius: 6,
                 barThickness: 30
             }]
@@ -145,7 +145,7 @@ function renderCharts() {
             labels: categories,
             datasets: [{
                 data: dataValues,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#2ee64d', '#9966FF'],
                 borderWidth: 0,
                 hoverOffset: 4
             }]
