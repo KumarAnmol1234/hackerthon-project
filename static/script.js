@@ -1,12 +1,15 @@
-// --- Data & State ---
-let expenses = [
-    
-];
+// ---------------------------------------------------------
+// 1. CONFIGURATION (The missing link!)
+// ---------------------------------------------------------
+// This tells your browser where the Server is living.
+const API_URL = 'http://localhost:5000/api/expenses'; 
 
+// Global variables
+let expenses = []; 
 let barChartInstance = null;
 let pieChartInstance = null;
 
-// --- Elements ---
+// DOM Elements
 const form = document.getElementById('expense-form');
 const listContainer = document.getElementById('transaction-list');
 const totalEl = document.getElementById('total-expenses');
@@ -14,26 +17,110 @@ const monthEl = document.getElementById('monthly-expenses');
 const avgEl = document.getElementById('avg-expenses');
 const countEl = document.getElementById('total-count');
 
-// --- Initialization ---
-function init() {
-    renderList();
-    updateSummary();
-    renderCharts();
+// ---------------------------------------------------------
+// 2. INITIALIZATION
+// ---------------------------------------------------------
+async function init() {
+    // 1. Load data from the Database (MongoDB)
+    await fetchExpenses(); 
     
-    // Set default date to today
+    // 2. Set the date input to today's date automatically
     document.getElementById('date').valueAsDate = new Date();
 }
 
-// --- List Rendering ---
+// ---------------------------------------------------------
+// 3. API FUNCTIONS (Talking to the Server)
+// ---------------------------------------------------------
+
+// GET: Fetch all data from MongoDB
+async function fetchExpenses() {
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        
+        // Save the data to our global variable
+        expenses = data; 
+        
+        // Update the screen
+        renderList();
+        updateSummary();
+        renderCharts();
+    } catch (error) {
+        console.error('Error fetching data. Is the server running?', error);
+        // Optional: Alert the user if server is down
+        // alert("Could not connect to the server. Make sure 'node server.js' is running!");
+    }
+}
+
+// POST: Add a new expense to MongoDB
+async function addExpense(e) {
+    e.preventDefault();
+    
+    // Create the data object from the form
+    const newExpense = {
+        category: document.getElementById('category').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        date: document.getElementById('date').value,
+        description: document.getElementById('description').value
+    };
+
+    try {
+        // Send data to the server
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newExpense)
+        });
+
+        if (res.ok) {
+            // If successful, reload everything so we see the new item
+            await fetchExpenses(); 
+            
+            // Clear the form
+            form.reset();
+            document.getElementById('date').valueAsDate = new Date();
+        } else {
+            alert("Error saving data!");
+        }
+    } catch (error) {
+        console.error('Error adding expense:', error);
+    }
+}
+
+// DELETE: Remove an expense from MongoDB
+window.deleteExpense = async function(id) {
+    if(confirm('Delete this transaction?')) {
+        try {
+            // Send delete command to server
+            await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+            
+            // Reload data to show it's gone
+            await fetchExpenses(); 
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// 4. RENDERING (Updating the Screen)
+// ---------------------------------------------------------
+
 function renderList() {
     listContainer.innerHTML = '';
     
-    // Sort by newest first
+    // Sort items so newest are at the top
     const sortedExpenses = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     sortedExpenses.forEach(expense => {
         const item = document.createElement('div');
         item.className = 'transaction-item';
+        
+        // Notice we use '_id' here because that's what MongoDB calls it
         item.innerHTML = `
             <div class="t-details">
                 <h4>${expense.category}</h4>
@@ -41,65 +128,24 @@ function renderList() {
             </div>
             <div style="display:flex; align-items:center;">
                 <span class="t-amount">$${expense.amount.toFixed(2)}</span>
-                <button class="delete-btn" onclick="deleteExpense(${expense.id})">×</button>
+                <button class="delete-btn" onclick="deleteExpense('${expense._id}')">×</button>
             </div>
         `;
         listContainer.appendChild(item);
     });
 }
 
-// --- Summary Calculations ---
 function updateSummary() {
     const total = expenses.reduce((sum, item) => sum + item.amount, 0);
     const count = expenses.length;
     const avg = count > 0 ? total / count : 0;
 
     totalEl.textContent = `$${total.toFixed(2)}`;
-    // For this demo, "This Month" is same as Total. 
-    // In a real app, you'd filter by current month.
     monthEl.textContent = `$${total.toFixed(2)}`;
     avgEl.textContent = `$${avg.toFixed(2)}`;
     countEl.textContent = count;
 }
 
-// --- Add Expense ---
-function addExpense(e) {
-    e.preventDefault();
-    
-    const category = document.getElementById('category').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-    const date = document.getElementById('date').value;
-    const description = document.getElementById('description').value;
-
-    const newExpense = {
-        id: Date.now(),
-        category,
-        amount,
-        date,
-        description
-    };
-
-    expenses.push(newExpense);
-    
-    renderList();
-    updateSummary();
-    renderCharts();
-    
-    form.reset();
-    document.getElementById('date').valueAsDate = new Date();
-}
-
-// --- Delete Expense ---
-window.deleteExpense = function(id) {
-    if(confirm('Delete this transaction?')) {
-        expenses = expenses.filter(item => item.id !== id);
-        renderList();
-        updateSummary();
-        renderCharts();
-    }
-}
-
-// --- Charts Logic ---
 function renderCharts() {
     const categories = ['Food', 'Transportation', 'Entertainment', 'Utilities', 'Shopping'];
     const dataValues = categories.map(cat => {
@@ -108,14 +154,14 @@ function renderCharts() {
             .reduce((sum, e) => sum + e.amount, 0);
     });
 
-    // Destroy old charts to update
+    // Destroy old charts if they exist so they don't overlap
     if (barChartInstance) barChartInstance.destroy();
     if (pieChartInstance) pieChartInstance.destroy();
 
     const ctxBar = document.getElementById('barChart').getContext('2d');
     const ctxPie = document.getElementById('pieChart').getContext('2d');
 
-    // 1. Bar Chart
+    // Bar Chart
     barChartInstance = new Chart(ctxBar, {
         type: 'bar',
         data: {
@@ -123,7 +169,7 @@ function renderCharts() {
             datasets: [{
                 label: 'Spending',
                 data: dataValues,
-                backgroundColor: '#3f3f3fc5',
+                backgroundColor: '#111',
                 borderRadius: 6,
                 barThickness: 30
             }]
@@ -138,14 +184,14 @@ function renderCharts() {
         }
     });
 
-    // 2. Pie Chart (Doughnut)
+    // Pie Chart
     pieChartInstance = new Chart(ctxPie, {
         type: 'doughnut',
         data: {
             labels: categories,
             datasets: [{
                 data: dataValues,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#2ee64d', '#9966FF'],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#1ef13a', '#9966FF'],
                 borderWidth: 0,
                 hoverOffset: 4
             }]
@@ -160,7 +206,11 @@ function renderCharts() {
     });
 }
 
-// --- Profile Dropdown Logic ---
+// ---------------------------------------------------------
+// 5. EVENT LISTENERS
+// ---------------------------------------------------------
+
+// Profile Dropdown Logic
 window.toggleDropdown = function() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
@@ -178,8 +228,8 @@ window.onclick = function(event) {
     }
 }
 
-// Event Listeners
+// Listen for form submit
 form.addEventListener('submit', addExpense);
 
-// Start
+// Start the app
 init();

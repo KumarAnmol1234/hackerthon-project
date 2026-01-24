@@ -37,6 +37,10 @@ const Expense = mongoose.model('Expense', expenseSchema);
 // ---------------------------------------------------------
 
 // GET: Fetch all expenses
+// Add this to server.js
+app.get('/', (req, res) => {
+    res.send('Server is Running! 🚀');
+});
 app.get('/api/expenses', async (req, res) => {
     try {
         const expenses = await Expense.find();
