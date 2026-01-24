@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Dashboard</title>
-
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
     <link rel="stylesheet" href="/static/style1.css">
 </head>
-
 <body>
 
     <nav class="navbar">
         <div class="logo">
-            <span class="material-symbols-outlined">account_balance_wallet</span>
-            Expense Tracker
+            <span class="material-symbols-outlined">account_balance_wallet</span> 
+            Expensify
         </div>
-
+        
         <div class="profile-dropdown-container">
-            <div class="user-profile" onclick="toggleDropdown()">GU</div>
-
+            <div class="user-profile" onclick="toggleDropdown()">KA</div>
+            
             <div class="dropdown-menu" id="myDropdown">
                 <div class="menu-header">
-                    <span class="name">Guest User</span>
-                    <span class="email">guest@example.com</span>
+                    <span class="name">KumarAnmol</span>
+                    <span class="email">dnrkranmol@gmail.com</span>
                 </div>
                 <hr>
-                <a href="#" class="menu-item">
+                <a href="#" class="menu-item" onclick="openProfileModal(); toggleDropdown();">
                     <span class="material-symbols-outlined icon-sm">person</span> View Profile
+                </a>
                 <a href="#" class="menu-item logout">
                     <span class="material-symbols-outlined icon-sm">logout</span> Logout
                 </a>
@@ -103,7 +101,7 @@
                 </button>
             </form>
         </div>
-        <br>
+<br>
         <div class="charts-row">
             <div class="section-container chart-container">
                 <h2>Expenses by Category</h2>
@@ -122,11 +120,44 @@
         <div class="section-container recent-container">
             <h2>Recent Expenses</h2>
             <div id="transaction-list">
+                </div>
+        </div>
+    </div>
+
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">×</span>
+            
+            <div class="modal-header">
+                <h2>Profile</h2>
+                <p>View your account details and statistics.</p>
+            </div>
+
+            <div class="profile-avatar-section">
+                <div class="large-avatar">KA</div>
+                <h3>KumarAnmol</h3>
+                <p class="email-text">dnrkranmol@gmail.com</p>
+            </div>
+
+            <hr class="profile-divider">
+
+            <div class="profile-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Total Expenses</span>
+                    <span class="stat-value" id="profile-total">$0.00</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Transactions</span>
+                    <span class="stat-value" id="profile-count">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Member Since</span>
+                    <span class="stat-value">January 2026</span>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="/static/script.js"></script>
 </body>
-
 </html>
