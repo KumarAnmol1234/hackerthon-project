@@ -191,7 +191,7 @@ function renderCharts() {
             labels: categories,
             datasets: [{
                 data: dataValues,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#3cff5c', '#9966FF'],
                 borderWidth: 0,
                 hoverOffset: 4
             }]
@@ -233,37 +233,3 @@ form.addEventListener('submit', addExpense);
 
 // Start the app
 init();
-
-// ==========================================
-//           PROFILE MODAL LOGIC
-// ==========================================
-
-// 1. Function to Open the Modal
-window.openProfileModal = function() {
-    // A. Grab the current values from the main Dashboard
-    const currentTotal = document.getElementById('total-expenses').textContent;
-    const currentCount = document.getElementById('total-count').textContent;
-
-    // B. Inject them into the Profile Modal
-    document.getElementById('profile-total').textContent = currentTotal;
-    document.getElementById('profile-count').textContent = currentCount;
-
-    // C. Make the modal visible
-    const modal = document.getElementById('profile-modal');
-    modal.style.display = 'flex'; // Uses 'flex' to center it on screen
-}
-
-// 2. Function to Close the Modal
-window.closeProfileModal = function() {
-    document.getElementById('profile-modal').style.display = 'none';
-}
-
-// 3. Logic to close Modal when clicking outside the white box
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('profile-modal');
-    
-    // If the target clicked is the dark background (modal) itself, close it
-    if (event.target === modal) {
-        closeProfileModal();
-    }
-});
