@@ -206,9 +206,8 @@ function renderCharts() {
     });
 }
 
-// ---------------------------------------------------------
+
 // 5. EVENT LISTENERS
-// ---------------------------------------------------------
 
 // Profile Dropdown Logic
 window.toggleDropdown = function() {

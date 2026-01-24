@@ -6,23 +6,18 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 5000;
 
-// Middleware (Allows frontend to talk to backend)
+//Allows frontend to talk to backend
 app.use(cors());
 app.use(bodyParser.json());
 
-// ---------------------------------------------------------
-// 1. DATABASE CONNECTION
-// ---------------------------------------------------------
-// 👇 IMPORTANT: Replace this string with your actual MongoDB Connection String
+
 const MONGO_URI = 'mongodb+srv://anmol:0os1TAvPW6dHeLG0@cluster1.hva2eem.mongodb.net/?appName=Cluster1';
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ MongoDB Connected'))
     .catch(err => console.log('❌ DB Connection Error:', err));
 
-// ---------------------------------------------------------
-// 2. DATA MODEL (Schema)
-// ---------------------------------------------------------
+// 2. DATA MODEL
 const expenseSchema = new mongoose.Schema({
     category: String,
     amount: Number,
@@ -31,12 +26,8 @@ const expenseSchema = new mongoose.Schema({
 });
 
 const Expense = mongoose.model('Expense', expenseSchema);
-
-// ---------------------------------------------------------
 // 3. ROUTES (The API Endpoints)
-// ---------------------------------------------------------
-
-// GET: Fetch all expenses
+// Fetch all expenses
 // Add this to server.js
 app.get('/', (req, res) => {
     res.send('Server is Running! 🚀');
@@ -77,9 +68,7 @@ app.delete('/api/expenses/:id', async (req, res) => {
     }
 });
 
-// ---------------------------------------------------------
 // 4. START SERVER
-// ---------------------------------------------------------
 app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
