@@ -1,4 +1,4 @@
-﻿# hackerthon-projt
+﻿# hackerthon-project
 this git repo is for the hackerthon Duhacks 5.0 24,25/01/2026
 the resource file all the required file will be provided in this git repo
 This project is a student-focused finance tracker web application designed to help users manage their monthly expenses in an organized and visual manner.
